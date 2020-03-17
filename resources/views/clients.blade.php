@@ -66,65 +66,39 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+        <div class="container-fluid">
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+            <div class="flex-center position-ref">
+                
+                <div class="content">
+                    <div class="title m-b-md">
+                        Latest Payments
+                    </div>
+                    
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Surname</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Latest Payment At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($clients as $client)
+                            <tr>
+                                <th scope="row">{{$client->id}}</th>
+                                <td>{{$client->name}}</td>
+                                <td>{{$client->surname}}</td>
+                                <td>{{$client->amount}}</td>
+                                <td>{{$client->latest_payment!=null ? date('d-M-y H:ia', strtotime($client->latest_payment)) : 'No Payment Yet'}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Latest Payments
-                </div>
-
-                <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Latest Payment At</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
-                </tbody>
-                </table>
             </div>
         </div>
-    </body>
-</html>
-<?php
-// echo '<pre>';
-
-// foreach($clients as $client){
-//     var_dump($client);exit;
-// }
-?>
+        </body>
+        </html>

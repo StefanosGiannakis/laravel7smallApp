@@ -10,11 +10,8 @@ use App\Http\Resources\Client as ClientResource;
 class ClientController extends Controller
 {
     public function showLatestPayments(){
-        
-        
+
         $clients= new ClientCollection(Client::all());
-        
-        return view('clients')->with('clients',$clients);
-        // return $clients;
+        return view('clients')->with('clients',json_decode(json_encode($clients)));
     }
 }
