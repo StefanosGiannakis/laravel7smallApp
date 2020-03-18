@@ -23,7 +23,14 @@ class ClientController extends Controller
         ]);
 
         $clients = new Client();
+
         
+        $startDateFormat = new \DateTime($dates['startDate']);
+        $endDateFormat = new \DateTime($dates['endDate']);
+        
+        $dates['startDate'] = $startDateFormat->format('Y-m-d H:i:s');
+        $dates['endDate'] = $endDateFormat->format('Y-m-d H:i:s');
+
         return $clients->getLatestPaymentsByDates($dates);    
     }
 }

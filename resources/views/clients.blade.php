@@ -68,9 +68,7 @@
 </head>
 <body>
 <div class="container-fluid">
-
     <div class="flex-center position-ref">
-        
         <div class="content">
             <div class="title m-b-md">
                 Latest Payments
@@ -95,7 +93,7 @@
                         <td>{{$client->name}}</td>
                         <td>{{$client->surname}}</td>
                         <td>{{$client->amount}}</td>
-                        <td>{{$client->latest_payment!=null ? date('d-M-y H:ia', strtotime($client->latest_payment)) : 'No Payment Yet'}}</td>
+                        <td>{{$client->latest_payment!=null ? date('Y-m-d H:i:s', strtotime($client->latest_payment)) : 'No Payment Yet'}}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -113,18 +111,17 @@ $(function(){
 
     datePicker.daterangepicker({
         timePicker: true,
-        timePicker24Hour: true,
         timePickerIncrement: 15,
         startDate: moment().startOf('hour').add(1,'hour'),
         endDate: moment().startOf('hour').add(32, 'hour'),
         locale: {
-            format: 'Y/M/D hh:mm'
+            format: 'Y/M/D hh:mm A'
         }
     });
 
     datePicker.on('apply.daterangepicker', function(ev, picker) {
-        let startDate = picker.startDate.format('Y/M/D hh:mm')
-        let endDate = picker.endDate.format('Y/M/D hh:mm')
+        let startDate = picker.startDate.format('Y/M/D hh:mm A')
+        let endDate = picker.endDate.format('Y/M/D hh:mm A')
         $('.alert-danger').fadeOut()
         getPaymentsBetweenDate(startDate,endDate)
     });
@@ -142,7 +139,6 @@ $(function(){
                 'endDate':endDate
             },
             success: function(response) {
-                console.log(response);
                 buildTable(response)
             },
             error: function(error) {
@@ -157,11 +153,13 @@ $(function(){
         let tr = ""
         table.empty()
         $.each(response, function(i, item) {
+            let date=item.updated_at!=null?item.updated_at:'No Payment'
+            let amount=item.amount!=null?item.amount:''
             tr += '<tr><th scope="row">'+item.id+'</th>'
             tr += '<td>'+item.name+'</td>'
             tr += '<td>'+item.surname+'</td>'
-            tr += '<td>'+item.amount+'</td>'
-            tr += '<td>'+item.updated_at+'</td></tr>'
+            tr += '<td>'+amount+'</td>'
+            tr += '<td>'+date+'</td></tr>'
         });
         table.html(tr)
     }
