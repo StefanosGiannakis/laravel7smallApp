@@ -14,14 +14,14 @@ class Client extends Model
     public function getLatestPaymentsByDates(array $dates){
 
         return DB::select("
-            select c.id,c.name,c.surname,p.amount,p.updated_at from laravelDB.clients c
+            select c.id,c.name,c.surname,p.amount,p.updated_at from clients c
             left join  (
             SELECT t1.*
-                FROM laravelDB.payments t1
+                FROM payments t1
                 INNER JOIN
                 (
                     SELECT client_id, MAX(updated_at) AS max_date
-                    FROM laravelDB.payments
+                    FROM payments
                     where updated_at BETWEEN '{$dates['startDate']}' and '{$dates['endDate']}'
                     GROUP BY client_id
                 ) t2
